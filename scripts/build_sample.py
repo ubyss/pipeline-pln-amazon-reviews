@@ -197,6 +197,18 @@ def build_sample(df):
     return sample[keep], used_min
 
 
+def read_raw_csv(raw_path):
+    sep = "\t" if raw_path.endswith(".tsv") else ","
+    for enc in ("utf-8", "latin-1", "cp1252"):
+        try:
+            return pd.read_csv(raw_path, sep=sep, low_memory=False, encoding=enc)
+        except UnicodeDecodeError:
+            continue
+    return pd.read_csv(
+        raw_path, sep=sep, low_memory=False, encoding="latin-1", encoding_errors="replace"
+    )
+
+
 def main():
     raw_path = find_raw_file()
     if raw_path is None:
@@ -204,8 +216,7 @@ def main():
             "Coloque Reviews.csv em data/sample/ ou o dataset do Kaggle em data/raw/."
         )
     print(f"Carregando: {raw_path}")
-    sep = "\t" if raw_path.endswith(".tsv") else ","
-    df = pd.read_csv(raw_path, sep=sep, low_memory=False)
+    df = read_raw_csv(raw_path)
     print(f"Linhas brutas: {len(df)}")
     sample, used_min = build_sample(df)
     os.makedirs(os.path.dirname(SAMPLE_PATH), exist_ok=True)
