@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#3498db", "font": {"color": "#333333"}, "id": "Gourmet_Foods_G1", "label": "Gourmet_Foods_G1", "shape": "dot", "size": 10, "tipo": "categoria"}, {"color": "#2ecc71", "font": {"color": "#333333"}, "id": "food", "label": "food", "shape": "dot", "size": 10, "tipo": "termo_topico"}, {"color": "#2ecc71", "font": {"color": "#333333"}, "id": "like", "label": "like", "shape": "dot", "size": 10, "tipo": "termo_topico"}, {"color": "#e74c3c", "font": {"color": "#333333"}, "id": "Starbucks", "label": "Starbucks", "shape": "dot", "size": 10, "tipo": "marca"}, {"color": "#2ecc71", "font": {"color": "#333333"}, "id": "water", "label": "water", "shape": "dot", "size": 10, "tipo": "termo_topico"}, {"color": "#2ecc71", "font": {"color": "#333333"}, "id": "coffee", "label": "coffee", "shape": "dot", "size": 10, "tipo": "termo_topico"}, {"color": "#2ecc71", "font": {"color": "#333333"}, "id": "cup", "label": "cup", "shape": "dot", "size": 10, "tipo": "termo_topico"}, {"color": "#2ecc71", "font": {"color": "#333333"}, "id": "coffee drink", "label": "coffee drink", "shape": "dot", "size": 10, "tipo": "termo_topico"}, {"color": "#2ecc71", "font": {"color": "#333333"}, "id": "petite", "label": "petite", "shape": "dot", "size": 10, "tipo": "termo_topico"}, {"color": "#e74c3c", "font": {"color": "#333333"}, "id": "Amazon", "label": "Amazon", "shape": "dot", "size": 10, "tipo": "marca"}, {"color": "#2ecc71", "font": {"color": "#333333"}, "id": "disc", "label": "disc", "shape": "dot", "size": 10, "tipo": "termo_topico"}, {"color": "#2ecc71", "font": {"color": "#333333"}, "id": "illy", "label": "illy", "shape": "dot", "size": 10, "tipo": "termo_topico"}, {"color": "#2ecc71", "font": {"color": "#333333"}, "id": "issimo", "label": "issimo", "shape": "dot", "size": 10, "tipo": "termo_topico"}, {"color": "#e74c3c", "font": {"color": "#333333"}, "id": "Mio", "label": "Mio", "shape": "dot", "size": 10, "tipo": "marca"}, {"color": "#e74c3c", "font": {"color": "#333333"}, "id": "Essentia", "label": "Essentia", "shape": "dot", "size": 10, "tipo": "marca"}, {"color": "#e74c3c", "font": {"color": "#333333"}, "id": "Newman", "label": "Newman", "shape": "dot", "size": 10, "tipo": "marca"}, {"color": "#2ecc71", "font": {"color": "#333333"}, "id": "menadione", "label": "menadione", "shape": "dot", "size": 10, "tipo": "termo_topico"}, {"color": "#3498db", "font": {"color": "#333333"}, "id": "Gourmet_Foods_G2", "label": "Gourmet_Foods_G2", "shape": "dot", "size": 10, "tipo": "categoria"}, {"color": "#e74c3c", "font": {"color": "#333333"}, "id": "Nutiva", "label": "Nutiva", "shape": "dot", "size": 10, "tipo": "marca"}, {"color": "#3498db", "font": {"color": "#333333"}, "id": "Gourmet_Foods_G3", "label": "Gourmet_Foods_G3", "shape": "dot", "size": 10, "tipo": "categoria"}, {"color": "#e74c3c", "font": {"color": "#333333"}, "id": "Lipton", "label": "Lipton", "shape": "dot", "size": 10, "tipo": "marca"}, {"color": "#e74c3c", "font": {"color": "#333333"}, "id": "Marley Coffee", "label": "Marley Coffee", "shape": "dot", "size": 10, "tipo": "marca"}, {"color": "#2ecc71", "font": {"color": "#333333"}, "id": "pod", "label": "pod", "shape": "dot", "size": 10, "tipo": "termo_topico"}, {"color": "#e74c3c", "font": {"color": "#333333"}, "id": "Senseo", "label": "Senseo", "shape": "dot", "size": 10, "tipo": "marca"}, {"color": "#2ecc71", "font": {"color": "#333333"}, "id": "tassimo", "label": "tassimo", "shape": "dot", "size": 10, "tipo": "termo_topico"}, {"color": "#3498db", "font": {"color": "#333333"}, "id": "Gourmet_Foods_G4", "label": "Gourmet_Foods_G4", "shape": "dot", "size": 10, "tipo": "categoria"}, {"color": "#e74c3c", "font": {"color": "#333333"}, "id": "Nabisco", "label": "Nabisco", "shape": "dot", "size": 10, "tipo": "marca"}, {"color": "#3498db", "font": {"color": "#333333"}, "id": "Gourmet_Foods_G5", "label": "Gourmet_Foods_G5", "shape": "dot", "size": 10, "tipo": "categoria"}, {"color": "#2ecc71", "font": {"color": "#333333"}, "id": "cuisine", "label": "cuisine", "shape": "dot", "size": 10, "tipo": "termo_topico"}, {"color": "#2ecc71", "font": {"color": "#333333"}, "id": "petite cuisine", "label": "petite cuisine", "shape": "dot", "size": 10, "tipo": "termo_topico"}, {"color": "#3498db", "font": {"color": "#333333"}, "id": "Gourmet_Foods_G6", "label": "Gourmet_Foods_G6", "shape": "dot", "size": 10, "tipo": "categoria"}, {"color": "#e74c3c", "font": {"color": "#333333"}, "id": "Bbq", "label": "Bbq", "shape": "dot", "size": 10, "tipo": "marca"}, {"color": "#3498db", "font": {"color": "#333333"}, "id": "Gourmet_Foods_G7", "label": "Gourmet_Foods_G7", "shape": "dot", "size": 10, "tipo": "categoria"}, {"color": "#e74c3c", "font": {"color": "#333333"}, "id": "Popchips", "label": "Popchips", "shape": "dot", "size": 10, "tipo": "marca"}, {"color": "#3498db", "font": {"color": "#333333"}, "id": "Gourmet_Foods_G8", "label": "Gourmet_Foods_G8", "shape": "dot", "size": 10, "tipo": "categoria"}, {"color": "#2ecc71", "font": {"color": "#333333"}, "id": "review_negativa", "label": "review_negativa", "shape": "dot", "size": 10}, {"color": "#2ecc71", "font": {"color": "#333333"}, "id": "granola", "label": "granola", "shape": "dot", "size": 10, "tipo": "termo_topico"}, {"color": "#2ecc71", "font": {"color": "#333333"}, "id": "potato", "label": "potato", "shape": "dot", "size": 10, "tipo": "termo_topico"}, {"color": "#2ecc71", "font": {"color": "#333333"}, "id": "snack", "label": "snack", "shape": "dot", "size": 10, "tipo": "termo_topico"}, {"color": "#2ecc71", "font": {"color": "#333333"}, "id": "tea", "label": "tea", "shape": "dot", "size": 10, "tipo": "termo_topico"}, {"color": "#2ecc71", "font": {"color": "#333333"}, "id": "ginger", "label": "ginger", "shape": "dot", "size": 10, "tipo": "termo_topico"}, {"color": "#2ecc71", "font": {"color": "#333333"}, "id": "peach", "label": "peach", "shape": "dot", "size": 10, "tipo": "termo_topico"}]);
+                  edges = new vis.DataSet([{"from": "Gourmet_Foods_G1", "to": "food", "width": 144}, {"from": "Gourmet_Foods_G1", "to": "like", "width": 256}, {"from": "Gourmet_Foods_G1", "to": "Starbucks", "width": 72}, {"from": "Gourmet_Foods_G1", "to": "water", "width": 92}, {"from": "Gourmet_Foods_G1", "to": "coffee", "width": 116}, {"from": "Gourmet_Foods_G1", "to": "cup", "width": 93}, {"from": "Gourmet_Foods_G1", "to": "coffee drink", "width": 26}, {"from": "Gourmet_Foods_G1", "to": "petite", "width": 4}, {"from": "Gourmet_Foods_G1", "to": "Amazon", "width": 25}, {"from": "Gourmet_Foods_G1", "to": "disc", "width": 19}, {"from": "Gourmet_Foods_G1", "to": "illy", "width": 22}, {"from": "Gourmet_Foods_G1", "to": "issimo", "width": 21}, {"from": "Gourmet_Foods_G1", "to": "Mio", "width": 5}, {"from": "Gourmet_Foods_G1", "to": "Essentia", "width": 5}, {"from": "Gourmet_Foods_G1", "to": "Newman", "width": 1}, {"from": "Gourmet_Foods_G1", "to": "menadione", "width": 1}, {"from": "Gourmet_Foods_G2", "to": "food", "width": 46}, {"from": "Gourmet_Foods_G2", "to": "like", "width": 196}, {"from": "Gourmet_Foods_G2", "to": "water", "width": 107}, {"from": "Gourmet_Foods_G2", "to": "Essentia", "width": 60}, {"from": "Gourmet_Foods_G2", "to": "Amazon", "width": 46}, {"from": "Gourmet_Foods_G2", "to": "coffee", "width": 62}, {"from": "Gourmet_Foods_G2", "to": "coffee drink", "width": 23}, {"from": "Gourmet_Foods_G2", "to": "Newman", "width": 12}, {"from": "Gourmet_Foods_G2", "to": "disc", "width": 19}, {"from": "Gourmet_Foods_G2", "to": "illy", "width": 21}, {"from": "Gourmet_Foods_G2", "to": "issimo", "width": 12}, {"from": "Gourmet_Foods_G2", "to": "Starbucks", "width": 15}, {"from": "Gourmet_Foods_G2", "to": "cup", "width": 23}, {"from": "Gourmet_Foods_G2", "to": "Nutiva", "width": 17}, {"from": "Gourmet_Foods_G2", "to": "petite", "width": 1}, {"from": "Gourmet_Foods_G3", "to": "Lipton", "width": 31}, {"from": "Gourmet_Foods_G3", "to": "like", "width": 183}, {"from": "Gourmet_Foods_G3", "to": "water", "width": 122}, {"from": "Gourmet_Foods_G3", "to": "Marley Coffee", "width": 41}, {"from": "Gourmet_Foods_G3", "to": "coffee", "width": 117}, {"from": "Gourmet_Foods_G3", "to": "pod", "width": 77}, {"from": "Gourmet_Foods_G3", "to": "cup", "width": 94}, {"from": "Gourmet_Foods_G3", "to": "Essentia", "width": 3}, {"from": "Gourmet_Foods_G3", "to": "food", "width": 20}, {"from": "Gourmet_Foods_G3", "to": "disc", "width": 14}, {"from": "Gourmet_Foods_G3", "to": "coffee drink", "width": 20}, {"from": "Gourmet_Foods_G3", "to": "Amazon", "width": 18}, {"from": "Gourmet_Foods_G3", "to": "Senseo", "width": 11}, {"from": "Gourmet_Foods_G3", "to": "Starbucks", "width": 11}, {"from": "Gourmet_Foods_G3", "to": "Mio", "width": 23}, {"from": "Gourmet_Foods_G3", "to": "tassimo", "width": 3}, {"from": "Gourmet_Foods_G3", "to": "illy", "width": 1}, {"from": "Gourmet_Foods_G3", "to": "petite", "width": 1}, {"from": "Gourmet_Foods_G4", "to": "like", "width": 202}, {"from": "Gourmet_Foods_G4", "to": "coffee", "width": 167}, {"from": "Gourmet_Foods_G4", "to": "pod", "width": 113}, {"from": "Gourmet_Foods_G4", "to": "cup", "width": 135}, {"from": "Gourmet_Foods_G4", "to": "Marley Coffee", "width": 50}, {"from": "Gourmet_Foods_G4", "to": "Amazon", "width": 18}, {"from": "Gourmet_Foods_G4", "to": "Newman", "width": 17}, {"from": "Gourmet_Foods_G4", "to": "food", "width": 38}, {"from": "Gourmet_Foods_G4", "to": "disc", "width": 17}, {"from": "Gourmet_Foods_G4", "to": "coffee drink", "width": 23}, {"from": "Gourmet_Foods_G4", "to": "water", "width": 65}, {"from": "Gourmet_Foods_G4", "to": "Nabisco", "width": 9}, {"from": "Gourmet_Foods_G4", "to": "Starbucks", "width": 19}, {"from": "Gourmet_Foods_G4", "to": "Senseo", "width": 15}, {"from": "Gourmet_Foods_G4", "to": "petite", "width": 3}, {"from": "Gourmet_Foods_G4", "to": "tassimo", "width": 2}, {"from": "Gourmet_Foods_G4", "to": "Essentia", "width": 1}, {"from": "Gourmet_Foods_G5", "to": "Amazon", "width": 28}, {"from": "Gourmet_Foods_G5", "to": "food", "width": 107}, {"from": "Gourmet_Foods_G5", "to": "like", "width": 153}, {"from": "Gourmet_Foods_G5", "to": "cuisine", "width": 49}, {"from": "Gourmet_Foods_G5", "to": "petite", "width": 56}, {"from": "Gourmet_Foods_G5", "to": "petite cuisine", "width": 46}, {"from": "Gourmet_Foods_G5", "to": "menadione", "width": 25}, {"from": "Gourmet_Foods_G5", "to": "water", "width": 69}, {"from": "Gourmet_Foods_G5", "to": "Mio", "width": 14}, {"from": "Gourmet_Foods_G5", "to": "cup", "width": 20}, {"from": "Gourmet_Foods_G5", "to": "disc", "width": 10}, {"from": "Gourmet_Foods_G5", "to": "coffee", "width": 4}, {"from": "Gourmet_Foods_G5", "to": "Nabisco", "width": 1}, {"from": "Gourmet_Foods_G5", "to": "Lipton", "width": 2}, {"from": "Gourmet_Foods_G5", "to": "Essentia", "width": 1}, {"from": "Gourmet_Foods_G5", "to": "illy", "width": 1}, {"from": "Gourmet_Foods_G6", "to": "coffee", "width": 68}, {"from": "Gourmet_Foods_G6", "to": "cup", "width": 79}, {"from": "Gourmet_Foods_G6", "to": "Amazon", "width": 23}, {"from": "Gourmet_Foods_G6", "to": "Newman", "width": 6}, {"from": "Gourmet_Foods_G6", "to": "like", "width": 130}, {"from": "Gourmet_Foods_G6", "to": "food", "width": 81}, {"from": "Gourmet_Foods_G6", "to": "pod", "width": 12}, {"from": "Gourmet_Foods_G6", "to": "coffee drink", "width": 4}, {"from": "Gourmet_Foods_G6", "to": "Starbucks", "width": 7}, {"from": "Gourmet_Foods_G6", "to": "disc", "width": 15}, {"from": "Gourmet_Foods_G6", "to": "cuisine", "width": 3}, {"from": "Gourmet_Foods_G6", "to": "water", "width": 56}, {"from": "Gourmet_Foods_G6", "to": "petite", "width": 1}, {"from": "Gourmet_Foods_G6", "to": "Essentia", "width": 3}, {"from": "Gourmet_Foods_G6", "to": "Bbq", "width": 1}, {"from": "Gourmet_Foods_G7", "to": "like", "width": 127}, {"from": "Gourmet_Foods_G7", "to": "cup", "width": 17}, {"from": "Gourmet_Foods_G7", "to": "Amazon", "width": 40}, {"from": "Gourmet_Foods_G7", "to": "Bbq", "width": 25}, {"from": "Gourmet_Foods_G7", "to": "Popchips", "width": 60}, {"from": "Gourmet_Foods_G7", "to": "food", "width": 52}, {"from": "Gourmet_Foods_G7", "to": "coffee", "width": 1}, {"from": "Gourmet_Foods_G7", "to": "water", "width": 39}, {"from": "Gourmet_Foods_G7", "to": "disc", "width": 4}, {"from": "Gourmet_Foods_G7", "to": "petite", "width": 2}, {"from": "Gourmet_Foods_G7", "to": "Essentia", "width": 4}, {"from": "Gourmet_Foods_G8", "to": "Amazon", "width": 36}, {"from": "Gourmet_Foods_G8", "to": "Nutiva", "width": 15}, {"from": "Gourmet_Foods_G8", "to": "food", "width": 46}, {"from": "Gourmet_Foods_G8", "to": "like", "width": 141}, {"from": "Gourmet_Foods_G8", "to": "Essentia", "width": 7}, {"from": "Gourmet_Foods_G8", "to": "water", "width": 34}, {"from": "Gourmet_Foods_G8", "to": "disc", "width": 4}, {"from": "Gourmet_Foods_G8", "to": "cup", "width": 18}, {"from": "Gourmet_Foods_G8", "to": "Popchips", "width": 34}, {"from": "Gourmet_Foods_G8", "to": "Bbq", "width": 14}, {"from": "Gourmet_Foods_G8", "to": "Nabisco", "width": 2}, {"from": "Gourmet_Foods_G8", "to": "illy", "width": 1}, {"from": "Gourmet_Foods_G8", "to": "coffee", "width": 4}, {"from": "Amazon", "to": "review_negativa", "width": 33}, {"from": "Starbucks", "to": "review_negativa", "width": 16}, {"from": "Essentia", "to": "review_negativa", "width": 10}, {"from": "Marley Coffee", "to": "review_negativa", "width": 8}, {"from": "Lipton", "to": "review_negativa", "width": 5}, {"from": "Bbq", "to": "review_negativa", "width": 1}, {"from": "Senseo", "to": "review_negativa", "width": 1}, {"from": "Mio", "to": "review_negativa", "width": 8}, {"from": "Popchips", "to": "review_negativa", "width": 6}, {"from": "Nabisco", "to": "review_negativa", "width": 1}, {"from": "Newman", "to": "review_negativa", "width": 9}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
