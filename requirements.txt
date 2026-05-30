@@ -13,5 +13,6 @@ vaderSentiment>=3.3
 python-Levenshtein>=0.25
 pyLDAvis>=3.4
 kaggle>=1.6
+kagglehub[pandas-datasets]>=0.3
 jupyter>=1.0
 ipykernel>=6.0

@@ -119,25 +119,25 @@ O notebook baixa o modelo spaCy `en_core_web_sm` e os recursos NLTK na primeira 
 
 ## Execução rápida
 
-Os dados já vêm no repositório (`Reviews.csv` via Git LFS + `amazon_reviews_sample.csv`). Clone com LFS e execute o notebook:
-
 ```bash
-git lfs install
-git clone https://github.com/ubyss/pipeline-pln-amazon-reviews.git
-cd pipeline-pln-amazon-reviews
 pip install -r requirements.txt
 jupyter notebook projeto_pln_amazon.ipynb
 ```
 
-Execute **Run All** — o pipeline usa `amazon_reviews_sample.csv` (não é necessário baixar nada do Kaggle).
+Configure credenciais Kaggle (`~/.kaggle/kaggle.json` ou `KAGGLE_USERNAME` / `KAGGLE_KEY`).
 
-## Regenerar amostra (opcional)
+Execute **Run All**:
+
+1. Se `amazon_reviews_sample.csv` não existir, o notebook baixa [Amazon Fine Food Reviews](https://www.kaggle.com/datasets/snap/amazon-fine-food-reviews) com **kagglehub** e roda `scripts/build_sample.py`.
+2. O pipeline usa a amostra de 10k reviews.
+
+Clone com Git LFS se quiser `Reviews.csv` já no disco (opcional).
+
+## Regenerar amostra manualmente
 
 ```bash
 python scripts/build_sample.py
 ```
-
-Lê `data/sample/Reviews.csv`, filtra reviews longas, agrupa 80 produtos em 8 categorias (`Gourmet_Foods_G1` … `G8`) e grava `amazon_reviews_sample.csv`.
 
 ---
 
