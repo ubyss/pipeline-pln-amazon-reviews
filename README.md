@@ -97,10 +97,7 @@ O notebook `projeto_pln_amazon.ipynb` cobre o fluxo end-to-end: EDA, pré-proces
 │   └── sample/
 │       ├── Reviews.csv              # corpus completo (~568k reviews, Git LFS)
 │       └── amazon_reviews_sample.csv
-├── outputs/
-└── scripts/
-    ├── build_sample.py
-    └── generate_sample_fallback.py
+└── outputs/
 ```
 
 ---
@@ -128,16 +125,12 @@ Configure credenciais Kaggle (`~/.kaggle/kaggle.json` ou `KAGGLE_USERNAME` / `KA
 
 Execute **Run All**:
 
-1. Se `amazon_reviews_sample.csv` não existir, o notebook baixa [Amazon Fine Food Reviews](https://www.kaggle.com/datasets/snap/amazon-fine-food-reviews) com **kagglehub** e roda `scripts/build_sample.py`.
+1. Se `amazon_reviews_sample.csv` não existir, o notebook baixa [Amazon Fine Food Reviews](https://www.kaggle.com/datasets/snap/amazon-fine-food-reviews) com **kagglehub** e gera a amostra de 10k na célula de setup.
 2. O pipeline usa a amostra de 10k reviews.
 
 Clone com Git LFS se quiser `Reviews.csv` já no disco (opcional).
 
-## Regenerar amostra manualmente
-
-```bash
-python scripts/build_sample.py
-```
+Para regenerar a amostra, apague `data/sample/amazon_reviews_sample.csv` e execute **Run All** de novo.
 
 ---
 
