@@ -1,6 +1,5 @@
 data/raw/*
 !data/raw/.gitkeep
-data/sample/Reviews.csv
 Aulas/
 Modelos-Instagram-Infnet.png
 __pycache__/

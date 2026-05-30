@@ -95,6 +95,7 @@ O notebook `projeto_pln_amazon.ipynb` cobre o fluxo end-to-end: EDA, pré-proces
 ├── data/
 │   ├── raw/
 │   └── sample/
+│       ├── Reviews.csv              # corpus completo (~568k reviews, Git LFS)
 │       └── amazon_reviews_sample.csv
 ├── outputs/
 └── scripts/
@@ -118,22 +119,25 @@ O notebook baixa o modelo spaCy `en_core_web_sm` e os recursos NLTK na primeira 
 
 ## Execução rápida
 
-A amostra `data/sample/amazon_reviews_sample.csv` já está no repositório. Abra o notebook e execute **Run All**:
+Os dados já vêm no repositório (`Reviews.csv` via Git LFS + `amazon_reviews_sample.csv`). Clone com LFS e execute o notebook:
 
 ```bash
+git lfs install
+git clone https://github.com/ubyss/pipeline-pln-amazon-reviews.git
+cd pipeline-pln-amazon-reviews
+pip install -r requirements.txt
 jupyter notebook projeto_pln_amazon.ipynb
 ```
 
-## Regenerar amostra (opcional)
+Execute **Run All** — o pipeline usa `amazon_reviews_sample.csv` (não é necessário baixar nada do Kaggle).
 
-1. Baixe o [Amazon Fine Food Reviews](https://www.kaggle.com/datasets/snap/amazon-fine-food-reviews) e coloque `Reviews.csv` em `data/sample/`.
-2. Execute:
+## Regenerar amostra (opcional)
 
 ```bash
 python scripts/build_sample.py
 ```
 
-O script filtra reviews longas, agrupa 80 produtos em 8 categorias (`Gourmet_Foods_G1` … `G8`) e grava `amazon_reviews_sample.csv`.
+Lê `data/sample/Reviews.csv`, filtra reviews longas, agrupa 80 produtos em 8 categorias (`Gourmet_Foods_G1` … `G8`) e grava `amazon_reviews_sample.csv`.
 
 ---
 
